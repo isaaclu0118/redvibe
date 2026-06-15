@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Quicksand", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Quicksand", "Outfit", sans-serif;
+  --color-rednote: #FF2442;
+  --color-rednote-light: #FFF1F2;
+  --color-surface: #F9F9F9;
+  --animate-shake: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-slate-800 font-sans antialiased;
+  }
+}
+
+.rednote-gradient {
+  background: linear-gradient(135deg, #FF2442 0%, #FF5A79 100%);
+}
+
+.progress-gradient {
+  background: linear-gradient(to right, #FB923C, #FF2442);
+}
+
+.glass-card {
+  @apply bg-white shadow-sm border border-gray-100 rounded-[32px];
+}
+
+.mockup-border {
+  @apply border-[8px] border-gray-800 rounded-[40px] shadow-2xl;
+}
+
