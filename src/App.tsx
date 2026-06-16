@@ -66,6 +66,154 @@ function mapFavoriteRow(row: any) {
   };
 }
 
+function OnboardingPage({
+  config,
+  platform,
+  setPlatform,
+  handleLogin,
+  isAuthReady,
+}: {
+  config: any;
+  platform: Platform;
+  setPlatform: (platform: Platform) => void;
+  handleLogin: () => void;
+  isAuthReady: boolean;
+}) {
+  const PlatformIcon = config.icon;
+
+  return (
+    <main className="min-h-[calc(100vh-65px)] bg-white overflow-hidden">
+      <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-10 md:py-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <section className="lg:col-span-5 space-y-8">
+          <div className={cn("inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest", config.lightBg, config.text)}>
+            <PlatformIcon size={13} />
+            Creator engine
+          </div>
+
+          <div className="space-y-5">
+            <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight text-gray-950 leading-[0.95]">
+              Shape the post before the platform shapes it for you.
+            </h1>
+            <p className="text-base md:text-lg text-gray-500 font-medium leading-relaxed max-w-xl">
+              Redvibe turns a rough thought, place, mood, or saved spark into platform-ready copy, visual prompts, and a repeatable creator memory.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={handleLogin}
+              disabled={!isAuthReady}
+              className="h-14 px-6 rounded-2xl bg-gray-950 text-white text-sm font-black flex items-center justify-center gap-2 shadow-xl shadow-gray-200 transition-all hover:-translate-y-0.5 active:scale-95 disabled:opacity-50"
+            >
+              <LogIn size={18} />
+              Continue with Google
+            </button>
+            <div className="flex bg-gray-100 p-1 rounded-2xl gap-1">
+              <button
+                onClick={() => setPlatform("xhs")}
+                className={cn(
+                  "h-12 px-4 rounded-xl text-xs font-black transition-all flex items-center gap-2",
+                  platform === "xhs" ? "bg-white text-[#FF2442] shadow-sm" : "text-gray-500"
+                )}
+              >
+                <Notebook size={15} />
+                RedNote
+              </button>
+              <button
+                onClick={() => setPlatform("wechat")}
+                className={cn(
+                  "h-12 px-4 rounded-xl text-xs font-black transition-all flex items-center gap-2",
+                  platform === "wechat" ? "bg-white text-[#07C160] shadow-sm" : "text-gray-500"
+                )}
+              >
+                <MessageCircle size={15} />
+                WeChat
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4">
+            {[
+              { icon: Feather, label: "Capture", text: "Save raw sparks" },
+              { icon: BrainCircuit, label: "Shape", text: "Match voice" },
+              { icon: Target, label: "Tune", text: "Score impact" },
+            ].map((item) => (
+              <div key={item.label} className="border border-gray-100 rounded-2xl p-4 bg-gray-50/60">
+                <item.icon size={18} className={config.text} />
+                <p className="mt-3 text-xs font-black text-gray-900 uppercase tracking-widest">{item.label}</p>
+                <p className="mt-1 text-xs text-gray-500 font-medium">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="lg:col-span-7 relative min-h-[560px] hidden md:block">
+          <div className="absolute inset-y-6 left-0 w-[52%] rounded-[32px] bg-gray-50 border border-gray-100 p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-8">
+              <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Content Lab</span>
+              <span className={cn("text-[10px] font-black", config.text)}>300 chars</span>
+            </div>
+            <div className="space-y-4">
+              <div className="h-8 w-5/6 rounded-lg bg-gray-200/70" />
+              <div className="h-8 w-3/5 rounded-lg bg-gray-200/70" />
+              <div className="h-px bg-gray-200 my-8" />
+              <div className="grid grid-cols-2 gap-3">
+                {["18-24", "25-34", "Minimal", "Local"].map((item, index) => (
+                  <div key={item} className={cn("h-12 rounded-xl flex items-center justify-center text-xs font-black", index < 2 ? cn(config.accent, "text-white") : "bg-white border border-gray-100 text-gray-400")}>
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 h-24 rounded-2xl border border-dashed border-gray-200 bg-white flex items-center justify-center">
+                <Sparkles size={26} className="text-gray-200" />
+              </div>
+            </div>
+          </div>
+
+          <div className="absolute left-[35%] top-0 w-[310px] h-[590px] rounded-[3rem] bg-black p-1.5 shadow-[0_40px_90px_-35px_rgba(0,0,0,0.55)]">
+            <div className="h-full rounded-[2.5rem] bg-gray-50 overflow-hidden relative">
+              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-full" />
+              <div className="h-[48%] bg-gray-100 flex items-center justify-center">
+                <ImageIcon size={34} className="text-gray-200" />
+              </div>
+              <div className="p-5 space-y-3">
+                <div className="h-4 w-4/5 bg-gray-200 rounded" />
+                <div className="h-3 w-full bg-gray-100 rounded" />
+                <div className="h-3 w-5/6 bg-gray-100 rounded" />
+                <div className="flex gap-2 pt-3">
+                  <span className="text-[10px] font-black text-blue-600">#citywalk</span>
+                  <span className="text-[10px] font-black text-blue-600">#creator</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="absolute right-0 top-20 w-[38%] rounded-[32px] border border-gray-100 bg-white p-6 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-5">Impact Index</p>
+            <div className="flex items-end gap-1 mb-5">
+              <span className={cn("text-5xl font-black leading-none", config.text)}>92</span>
+              <span className="text-gray-300 font-bold">/100</span>
+            </div>
+            <div className="space-y-3">
+              {["Hook", "Trend", "Save"].map((label, index) => (
+                <div key={label} className="space-y-1">
+                  <div className="flex justify-between text-[9px] font-black uppercase tracking-widest text-gray-400">
+                    <span>{label}</span>
+                    <span>{[94, 88, 91][index]}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-50 rounded-full overflow-hidden">
+                    <div className={cn("h-full rounded-full", config.accent)} style={{ width: `${[94, 88, 91][index]}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
+
 export default function App() {
   const [topic, setTopic] = useState("");
   const [location, setLocation] = useState("");
@@ -94,6 +242,7 @@ export default function App() {
   const suggestedRefinements = platformRefinements[platform];
 
   const [user, setUser] = useState<User | null>(null);
+  const [isAuthReady, setIsAuthReady] = useState(false);
   const userAvatar = getUserAvatar(user);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
@@ -344,6 +493,7 @@ export default function App() {
       if (currentUser) {
         loadUserData(currentUser.id);
       }
+      setIsAuthReady(true);
     };
 
     bootstrapAuth();
@@ -359,6 +509,7 @@ export default function App() {
         setFavorites([]);
         setInspirations([]);
       }
+      setIsAuthReady(true);
     });
 
     return () => authListener.subscription.unsubscribe();
@@ -1000,6 +1151,22 @@ export default function App() {
         )}
       </AnimatePresence>
 
+      {!isAuthReady ? (
+        <main className="min-h-[calc(100vh-65px)] bg-white flex items-center justify-center">
+          <div className="flex items-center gap-3 text-gray-400 text-xs font-black uppercase tracking-widest">
+            <RefreshCcw size={16} className={cn("animate-spin", config.text)} />
+            Preparing workspace
+          </div>
+        </main>
+      ) : !user ? (
+        <OnboardingPage
+          config={config}
+          platform={platform}
+          setPlatform={setPlatform}
+          handleLogin={handleLogin}
+          isAuthReady={isAuthReady}
+        />
+      ) : (
       <main className="max-w-[1600px] mx-auto p-4 md:p-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
@@ -1702,6 +1869,7 @@ export default function App() {
           </div>
         </div>
       </main>
+      )}
 
       {/* Settings Modal */}
       <AnimatePresence>
