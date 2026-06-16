@@ -467,28 +467,36 @@ export default function App() {
       const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
       const accessToken = hashParams.get("access_token");
       const refreshToken = hashParams.get("refresh_token");
+      const oauthError = url.searchParams.get("error_description") || hashParams.get("error_description");
+      let callbackUser: User | null = null;
+
+      if (oauthError) {
+        console.error("OAuth callback failed", oauthError);
+      }
 
       if (oauthCode) {
-        const { error } = await supabase.auth.exchangeCodeForSession(oauthCode);
+        const { data, error } = await supabase.auth.exchangeCodeForSession(oauthCode);
         if (error) {
           console.error("OAuth session exchange failed", error);
         } else {
+          callbackUser = data.session?.user ?? null;
           window.history.replaceState({}, document.title, window.location.pathname);
         }
       } else if (accessToken && refreshToken) {
-        const { error } = await supabase.auth.setSession({
+        const { data, error } = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken,
         });
         if (error) {
           console.error("OAuth token session restore failed", error);
         } else {
+          callbackUser = data.session?.user ?? null;
           window.history.replaceState({}, document.title, window.location.pathname);
         }
       }
 
       const { data } = await supabase.auth.getSession();
-      const currentUser = data.session?.user ?? null;
+      const currentUser = callbackUser ?? data.session?.user ?? null;
       setUser(currentUser);
       if (currentUser) {
         loadUserData(currentUser.id);
