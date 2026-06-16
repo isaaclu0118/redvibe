@@ -306,23 +306,40 @@ export default function App() {
 
   // Monitor auth state
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      const currentUser = data.user;
+    const loadUserData = (uid: string) => {
+      fetchHistory(uid);
+      fetchFavorites(uid);
+      fetchInspirations(uid);
+    };
+
+    const bootstrapAuth = async () => {
+      const url = new URL(window.location.href);
+      const oauthCode = url.searchParams.get("code");
+
+      if (oauthCode) {
+        const { error } = await supabase.auth.exchangeCodeForSession(oauthCode);
+        if (error) {
+          console.error("OAuth session exchange failed", error);
+        } else {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+
+      const { data } = await supabase.auth.getSession();
+      const currentUser = data.session?.user ?? null;
       setUser(currentUser);
       if (currentUser) {
-        fetchHistory(currentUser.id);
-        fetchFavorites(currentUser.id);
-        fetchInspirations(currentUser.id);
+        loadUserData(currentUser.id);
       }
-    });
+    };
+
+    bootstrapAuth();
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       if (currentUser) {
-        fetchHistory(currentUser.id);
-        fetchFavorites(currentUser.id);
-        fetchInspirations(currentUser.id);
+        loadUserData(currentUser.id);
       } else {
         setTopicHistory([]);
         setTopicSuggestions([]);
