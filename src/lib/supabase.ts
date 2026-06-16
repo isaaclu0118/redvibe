@@ -10,7 +10,15 @@ if (!hasSupabaseConfig) {
 
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-anon-key'
+  supabaseAnonKey || 'placeholder-anon-key',
+  {
+    auth: {
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      persistSession: true,
+      flowType: 'pkce',
+    },
+  }
 );
 
 export enum OperationType {

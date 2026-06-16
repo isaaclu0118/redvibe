@@ -315,11 +315,24 @@ export default function App() {
     const bootstrapAuth = async () => {
       const url = new URL(window.location.href);
       const oauthCode = url.searchParams.get("code");
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      const accessToken = hashParams.get("access_token");
+      const refreshToken = hashParams.get("refresh_token");
 
       if (oauthCode) {
         const { error } = await supabase.auth.exchangeCodeForSession(oauthCode);
         if (error) {
           console.error("OAuth session exchange failed", error);
+        } else {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      } else if (accessToken && refreshToken) {
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        if (error) {
+          console.error("OAuth token session restore failed", error);
         } else {
           window.history.replaceState({}, document.title, window.location.pathname);
         }
